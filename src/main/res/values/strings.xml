@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">LoveGift</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="remind">你确定要看吗？\n\t\t\t\t你不记得我了吗？\n\t\t\t\t\t你最好再想一想!!</string>
+    <string name="know">想起来了</string>
+    <string name="look">不好意思，我忘了</string>
+    <string name="picture">\t\t选一张你自己的认为最好看的照片</string>
+    <string name="recorder">\t\t把你心中想要对她说的话录下来吧</string>
+    <string name="childhood">那是你小的时候，遗憾的是我没有陪着你一起上学，一起回家，一起玩耍，一起长大</string>
+    <string name="meet">生命中遇到了你，我感到无比的幸运和幸福。有了你，我不再孤单</string>
+    <string name="ageing">我能想到最浪漫的事，就是和你一起慢慢变老</string>
+    <string name="postscript">\t\t\t\t欢迎您使用本软件，定制异种风情的爱情礼物，相信不久，你就可以赢取白富美，走上人生巅峰了。</string>
+    <string name="makemethod">\t\t\t\t定制方法：长按拼图下面的原图按钮进入设置界面，就可以进行定制了</string>
+    <string name="request">\t\t\t\t期许：如果你的女神给了你一个爱的抱抱，那么请扫描下面的二维码支付1元给我，如果给了你一个深情的kiss，那么请支付2元给我，如果女神跟你滚了床单，那你还犹豫什么，还不赶紧打5块钱给我!
+    望以“资”鼓励。此处纯属扯蛋，但你一定要当真啊!哈哈，金额随意啦，看你心情啦。</string>
+</resources>
