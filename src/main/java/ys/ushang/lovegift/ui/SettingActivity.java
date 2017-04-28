@@ -12,7 +12,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+
+import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +26,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import ys.ushang.lovegift.R;
+import ys.ushang.lovegift.utils.PreferencesUtil;
+import ys.ushang.lovegift.utils.UtilsConstans;
 
 
 /**
@@ -32,13 +38,14 @@ public class SettingActivity extends Activity implements View.OnClickListener{
     private ImageButton capture,pick,recorder_start,recorder_stop;
     private MediaRecorder mediaRecorder;
     private String fileName;
-    private Button postscript;
+    private Button postscript,saveButton;
+    private EditText letter0,letter1,letter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-
+        CrashReport.initCrashReport(this, "900012942", false);
         fileName=getExternalFilesDir("").getPath()+"/recorder/";
 
         capture=(ImageButton)findViewById(R.id.capture);
@@ -51,6 +58,11 @@ public class SettingActivity extends Activity implements View.OnClickListener{
         recorder_stop.setOnClickListener(this);
         postscript=(Button)findViewById(R.id.postscript);
         postscript.setOnClickListener(this);
+        saveButton=(Button)findViewById(R.id.save);
+        saveButton.setOnClickListener(this);
+        letter0=(EditText)findViewById(R.id.letter_0);
+        letter1=(EditText)findViewById(R.id.letter_1);
+        letter2=(EditText)findViewById(R.id.letter_2);
     }
 
     @Override
@@ -99,6 +111,23 @@ public class SettingActivity extends Activity implements View.OnClickListener{
                 startActivity(new Intent(this,PostscriptActivity.class));
                 break;
             }
+            case R.id.save:{
+                PreferencesUtil pre=PreferencesUtil.getInstance(this);
+                String temp0=letter0.getText().toString();
+                String temp1=letter1.getText().toString();
+                String temp2=letter2.getText().toString();
+                if(!temp0.equals("")){
+                    pre.saveOnlyParameters(UtilsConstans.loveGift,"letter0",temp0);
+                }
+                if(!temp1.equals("")){
+                    pre.saveOnlyParameters(UtilsConstans.loveGift,"letter1",temp1);
+                }
+                if(!temp2.equals("")){
+                    pre.saveOnlyParameters(UtilsConstans.loveGift,"letter2",temp2);
+                }
+                finish();
+                break;
+            }
         }
 
     }
@@ -136,7 +165,6 @@ public class SettingActivity extends Activity implements View.OnClickListener{
     }
 
     public int copySdcardFile(String fromFile, String toFile)
-
     {
         try
         {
@@ -156,5 +184,15 @@ public class SettingActivity extends Activity implements View.OnClickListener{
             return -1;
         }
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
 }

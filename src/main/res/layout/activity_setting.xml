@@ -89,7 +89,59 @@
             android:textColor="#222222"
             />
     </LinearLayout>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_below="@id/recorder_layout"
+    android:layout_marginTop="10dp"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#222222"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:text="以下是拨打5201314后，述说故事所要添加的内容"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#222222"
+        android:layout_marginTop="5dp"
+        android:text="小时候"
+        />
+    <EditText
+        android:id="@+id/letter_0"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_edittext"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#222222"
+        android:text="相遇，相知"
+        />
+    <EditText
+        android:id="@+id/letter_1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_edittext"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#222222"
+        android:text="相扶到老"
+        />
+    <EditText
+        android:id="@+id/letter_2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_edittext"
+        />
+</LinearLayout>
 
 <Button
     android:id="@+id/postscript"
@@ -98,5 +150,13 @@
     android:layout_alignParentBottom="true"
     android:layout_alignParentRight="true"
     android:text="附言"
+    />
+<Button
+    android:id="@+id/save"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:text="保存"
     />
 </RelativeLayout>

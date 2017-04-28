@@ -15,3 +15,17 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-optimizationpasses 5
+-keep class com.nineoldandroids.**{*;}
+-keep class com.tencent.bugly.**{*;}
+-keepclassmembers class * {
+   public <init>(org.json.JSONObject);
+}
+-keep class com.iflytek.**{*;}
+-keep public class ys.ushang.lovegift.R$*{
+public static final int *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}

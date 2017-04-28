@@ -5,9 +5,22 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission  android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!--语音识别-->
+    <!--允许程序改变网络连接状态 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <!--读取联系人权限，上传联系人需要用到此权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         <activity
@@ -15,15 +28,34 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.SettingActivity"/>
         <activity android:name=".ui.OriginalActivity"/>
         <activity android:name=".ui.CallActivity"/>
-        <activity android:name=".ui.TheWordActivity"/>
+        <activity android:name=".ui.XunFeiActivity">
+
+        </activity>
+        <activity android:name=".ui.TheWordActivity"
+            android:launchMode="singleInstance"
+            android:taskAffinity="android.intent.action.theword"
+            >
+            <intent-filter>
+            <action android:name="android.intent.action.theword"/>
+            <category android:name="ys.ushang.lovegift.theword"/>
+            <category android:name="android.intent.category.DEFAULT"/>
+        </intent-filter>
+        </activity>
         <activity android:name=".ui.PostscriptActivity"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5673ce5be0f55a152a004509" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel ID" >
+        </meta-data>
     </application>
 
 </manifest>

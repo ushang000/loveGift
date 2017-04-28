@@ -16,6 +16,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.analytics.MobclickAgent;
+
 import java.io.IOException;
 
 import ys.ushang.lovegift.R;
@@ -36,14 +39,14 @@ public class CallActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call);
-
+        CrashReport.initCrashReport(this,"900012942",false);
         call_number=(TextView)findViewById(R.id.call_number);
         call_location=(TextView)findViewById(R.id.call_location);
         filePath=getExternalFilesDir("").getPath()+"/recorder/love.amr";
         Typeface face = Typeface.createFromAsset (getAssets() , "fonts/STCAIYUN.TTF" );
         Typeface face2 = Typeface.createFromAsset (getAssets() , "fonts/comicz.ttf" );
         call_number.setTypeface(face);
-        call_location.setTypeface(face2);
+        call_location.setTypeface(face);
         call_picture=(ImageView)findViewById(R.id.call_picture);
         call_picture.setImageBitmap(BitmapFactory.decodeFile(MainActivity.imgPath + "puzzle.jpg"));
 
@@ -90,17 +93,31 @@ public class CallActivity extends Activity implements View.OnClickListener{
 
         if(v==call_answer){
             mediaPlayer.stop();
+            mediaPlayer.release();
             mediaPlayerAnswer.start();
             call_answer.setVisibility(View.GONE);
             call_off.setVisibility(View.VISIBLE);
         }
         if(v==call_off){
             mediaPlayerAnswer.stop();
+            mediaPlayerAnswer.release();
             //finish();
             dialog.show();
 
 
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 
     private Uri getSystemDefultRingtoneUri() {

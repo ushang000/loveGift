@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.analytics.MobclickAgent;
+
 import ys.ushang.lovegift.R;
 
 
@@ -26,6 +29,7 @@ public class OriginalActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_original);
+        CrashReport.initCrashReport(this, "900012942", false);
         originalView=(ImageView)findViewById(R.id.original);
         originalView.setImageBitmap(BitmapFactory.decodeFile(MainActivity.imgPath+"puzzle.jpg"));
         know=(Button)findViewById(R.id.know);
@@ -34,7 +38,17 @@ public class OriginalActivity extends Activity implements View.OnClickListener{
         look.setOnClickListener(this);
         remind=(RelativeLayout)findViewById(R.id.remind);
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
     @Override
     public void onClick(View v) {
         if(v==know){

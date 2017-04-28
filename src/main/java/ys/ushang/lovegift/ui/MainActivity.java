@@ -21,6 +21,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.analytics.MobclickAgent;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,6 +32,8 @@ import java.io.OutputStream;
 import java.net.URI;
 
 import ys.ushang.lovegift.R;
+import ys.ushang.lovegift.utils.PreferencesUtil;
+import ys.ushang.lovegift.utils.UtilsConstans;
 import ys.ushang.lovegift.view.GamePintuLayout;
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -41,22 +46,42 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button originalButton;
     private MediaPlayer mediaPlayer;
     private String fileName;
+    private String [] letter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Intent intent= new Intent(Intent.ACTION_DIAL);
-        //puzzle=(ImageView)findViewById(R.id.puzzle);
-        /*mediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
-        try {
-            //mediaPlayer.setDataSource("/mnt/sdcard/Music/hjbj.mp3");
-            mediaPlayer.prepare();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+        CrashReport.initCrashReport(this, "900012942", false);
+        initData();
+
+        registerReceiver(phoneReceiver, new IntentFilter("android.intent.action.NEW_OUTGOING_CALL"));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isChanged) {
+            gamePintuLayout.nextLevel();
+        }
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(phoneReceiver);
+    }
+
+    public void initData(){
         fileName=getExternalFilesDir("").getPath()+"/recorder/";
         File file2=new File(fileName);
         if(!file2.exists()){
@@ -69,6 +94,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
             CopyAssets(fileName,"kisstherain.mp3");
         }
 
+        PreferencesUtil preferencesUtil=PreferencesUtil.getInstance(this);
+        letter=new String[]{getString(R.string.childhood),getString(R.string.meet),getString(R.string.ageing)};
+        for (int i=0;i<letter.length;i++){
+            String name=preferencesUtil.getParameterSharePreference("letter"+i,UtilsConstans.loveGift);
+            if (name==null){
+                preferencesUtil.saveOnlyParameters(UtilsConstans.loveGift,"letter"+i,letter[i]);
+            }
+        }
 
         imgPath = getExternalFilesDir("").getPath() + "/image/";
         originalButton = (Button) findViewById(R.id.original);
@@ -90,64 +123,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
 
         gamePintuLayout = (GamePintuLayout) findViewById(R.id.id_gameview);
-        // intent.setClassName("com.android.contacts","com.android.contacts.DialtactsActivity");
-        registerReceiver(phoneReceiver, new IntentFilter("android.intent.action.NEW_OUTGOING_CALL"));
-        // startActivity(intent);
-
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (isChanged) {
-            gamePintuLayout.nextLevel();
-        }
-
-        // puzzle.setImageBitmap(BitmapFactory.decodeFile(imgPath+"puzzle.jpg"));
-        //Log.i(TAG,"the image getTag = "+puzzle.getTag());
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     BroadcastReceiver phoneReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
-                //intent.getExtras();
-
-                Log.i("MainActivity", "the data is = " + getResultData());
-                if (getResultData().equals("5201314")) {
-
-                    //mediaPlayer.start();
-                    startActivity(new Intent(MainActivity.this, TheWordActivity.class));
+                String phoneNum = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+                Log.i(TAG," phoneNum : "+phoneNum);
+                if (phoneNum.equals("5201314")) {
+                    this.setResultData(null);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.setAction("android.intent.action.theword");
+                    startActivity(intent);
                 }
-                setResultData(null);
+
             }
 
         }
@@ -158,7 +149,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         File mWorkingPath = new File(dir);
         if (!mWorkingPath.exists()) {
             if (!mWorkingPath.mkdirs()) {
-                Log.e("--CopyAssets--", "cannot create directory.");
             }
         }
         try {
@@ -177,6 +167,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
+
     }
 
     @Override

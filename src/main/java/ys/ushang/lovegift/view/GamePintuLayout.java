@@ -215,6 +215,8 @@ public class GamePintuLayout extends RelativeLayout implements OnClickListener
 	private ImageView mFirst;
 	private ImageView mSecond;
 
+
+
 	@Override
 	public void onClick(View v)
 	{
