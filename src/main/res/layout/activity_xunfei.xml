@@ -23,6 +23,12 @@
         android:text="语音合成"
         />
     <Button
+        android:id="@+id/understand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="语义理解"
+        />
+    <Button
         android:id="@+id/pin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

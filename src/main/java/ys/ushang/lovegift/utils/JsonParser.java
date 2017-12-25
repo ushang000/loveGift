@@ -1,6 +1,7 @@
 package ys.ushang.lovegift.utils;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -34,6 +35,20 @@ public class JsonParser {
 			e.printStackTrace();
 		} 
 		return ret.toString();
+	}
+
+	public static String parseUnderJson(String json){
+		String result="";
+		try {
+			JSONObject root=new JSONObject(json);
+			JSONObject resultObject=new JSONObject(root.getString("answer"));
+			result=resultObject.getString("text");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+
+		return result;
 	}
 	
 	public static String parseGrammarResult(String json) {
